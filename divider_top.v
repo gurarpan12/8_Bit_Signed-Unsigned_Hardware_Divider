@@ -19,6 +19,15 @@ module divider_top(
   wire [7:0] quotient;
   wire [7:0] remainder;
   wire Z_error;
+
+  wire clean_start;
+  
+  synchronizer sync(
+    .clk (clk),
+    .rst_n (rst_n),
+    .button_in (start),
+    .start_pulse (clean_start)
+  );
   
   input_sign inp(
     .Dividend (Dividend),
@@ -32,7 +41,7 @@ module divider_top(
   
   divider div(
     .clk (clk),
-    .start (start),
+    .start (clean_start),
     .rst_n (rst_n),
     .signed_Dividend (signed_Dividend),
     .signed_Divisor (signed_Divisor),
